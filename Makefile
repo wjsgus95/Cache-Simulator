@@ -8,21 +8,24 @@ MAIN := $(SRCDIR)/main.cc
 SRC := $(filter-out $(MAIN), $(wildcard $(SRCDIR)/*.cc))
 OBJ := $(patsubst $(SRCDIR)/%.cc, $(OBJDIR)/%.o, $(SRC))
 
-CC := g++-9
+CC := g++-7
 CCFLAG := -std=c++11 -Wall -g -O0 -I $(SRCDIR)
 LDFLAG := -L $(PWD) -lcachemodel
 
-.PHONY: default lib clean
+.PHONY: default lib clean $(SRCDIR) $(OBJDIR)
 
 default: lib
 	$(CC) $(CCFLAG) $(MAIN) -o $(EXEC) $(LDFLAG)
 
-lib: $(OBJ)
+lib: $(OBJDIR) $(OBJ)
 	ar qcv $(LIB) $(OBJ)
 	ranlib $(LIB)
+
+$(OBJDIR):
+	mkdir -p $(OBJDIR)
 
 $(OBJDIR)/%.o : $(SRCDIR)/%.cc
 	$(CC) $(CCFLAG) -o $@ -c $< $(LDFLAG)
 
 clean:
-	rm -rf $(EXEC) $(LIB) $(OBJ)
+	rm -rf $(EXEC) $(LIB) $(OBJDIR)
