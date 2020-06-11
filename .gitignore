@@ -30,4 +30,4 @@
 *.exe
 *.out
 *.app
-cache_simulator
+./cache_simulator
