@@ -9,7 +9,7 @@ public:
     ~trace_t();
 
 private:
-    std::string m_filename;
+    std::string filename;
 };
 
 #endif

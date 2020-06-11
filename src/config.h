@@ -10,7 +10,7 @@ class section_t {
 public:
     section_t();
     section_t(const section_t& other);
-    section_t(std::string& m_name);
+    section_t(std::string m_name);
 
     ~section_t();
 
@@ -25,7 +25,6 @@ public:
         // Return false if key does not exist.
         if(!scalars.count(m_key)) { return false; }
 
-        T setting;
         std::stringstream ss(scalars[m_key]);
         ss >> m_container;
 
@@ -49,6 +48,7 @@ public:
 
     ~config_t();
 
+    bool exists(std::string m_name);
     section_t& get_section(std::string m_name);
 
 private:

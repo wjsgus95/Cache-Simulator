@@ -39,7 +39,7 @@ section_t::section_t(const section_t& other) {
     scalars = other.scalars;
 }
 
-section_t::section_t(string& m_name) : name(m_name) {
+section_t::section_t(string m_name) : name(m_name) {
      
 }
 
@@ -55,9 +55,23 @@ void section_t::set_setting(string m_key, string m_value) {
 }
 
 
+// Default config.
 config_t::config_t() {
+    section_t& general = sections["general"] = section_t("general");
+    general.set_setting("word_size", "4");
+    general.set_setting("block_size", "16");
+    general.set_setting("write_back", "true");
+
+    section_t& cache1 = sections["cache1"] = section_t("cache1");
+    cache1.set_setting("blocks", "16");
+    cache1.set_setting("associativity", "1");
+    cache1.set_setting("hit_time", "1");
+
+    section_t& memory = sections["memory"] = section_t("memory");
+    memory.set_setting("hit_time", "1000");
 }
 
+// Parse input config.
 config_t::config_t(string m_filename) {
     parse(m_filename);
 }
@@ -65,12 +79,16 @@ config_t::config_t(string m_filename) {
 config_t::~config_t() {
 }
 
+bool config_t::exists(string m_name) {
+    return sections.count(m_name);
+}
+
 section_t& config_t::get_section(string m_name) {
     // Assert section with given name exists.
     if(!sections.count(m_name)) {
         cerr << "Error: Given section name " << m_name
              << " does not exist." << endl;
-        exit(1);
+        abort();
     }
 
     return sections[m_name];
@@ -81,7 +99,7 @@ void config_t::parse(string& m_filename) {
     ifstream config_file(m_filename); 
     if(!config_file.is_open()) {
         cerr << "Error: Cannot open file " << m_filename << endl;
-        exit(1);
+        abort();
     }
 
     string line;
