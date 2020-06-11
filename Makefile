@@ -25,7 +25,7 @@ $(OBJDIR):
 	mkdir -p $(OBJDIR)
 
 $(OBJDIR)/%.o : $(SRCDIR)/%.cc
-	$(CC) $(CCFLAG) -o $@ -c $< $(LDFLAG)
+	$(CC) $(CCFLAG) -o $@ -c $<
 
 clean:
 	rm -rf $(EXEC) $(LIB) $(OBJDIR)
