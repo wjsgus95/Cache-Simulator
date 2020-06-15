@@ -3,7 +3,6 @@
 
 class message_t {
 public:
-protected:
 };
 
 

@@ -6,6 +6,7 @@
 #include <iostream>
 #include <map>
 
+
 class section_t {
 public:
     section_t();
@@ -38,6 +39,7 @@ public:
     static const std::string delimiter;
     static const std::string comment;
 };
+
 
 class config_t {
 public:

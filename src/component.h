@@ -11,13 +11,10 @@ public:
 
     // Progress time step.
     virtual void tick() = 0;
-
     // Set link to other component.
     void set_outlink(component_t* other);
-
     // Send message through outlink.
     void send(message_t* m_msg);
-
     // Data reception callback.
     virtual void recv(message_t* m_msg) = 0;
 
