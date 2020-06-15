@@ -9,13 +9,7 @@ general:
 cache1: #required
   blocks: 16
   associativity: 1
-  hit_time: 1 #cycles
+  latency: 1 #cycles
 
 memory: #required
-  hit_time: 1000 #cycles
-
-cache:
-    L1:
-        blocks: 16
-        associativity: 1
-        hit_time: 1
+  latency: 1000 #cycles
