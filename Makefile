@@ -9,12 +9,17 @@ SRC := $(filter-out $(MAIN), $(wildcard $(SRCDIR)/*.cc))
 OBJ := $(patsubst $(SRCDIR)/%.cc, $(OBJDIR)/%.o, $(SRC))
 
 CC := g++-7
-CCFLAG := -std=c++11 -Wall -g -O0 -I $(SRCDIR)
+CCFLAG := -std=c++11 -Wall -I $(SRCDIR)
 LDFLAG := -L $(PWD) -lcachemodel
 
-.PHONY: default lib clean $(SRCDIR) $(OBJDIR)
+.PHONY: all executable lib debug clean
 
-default: lib
+all: executable
+
+debug: CCFLAG += -g -O0 -DDEBUG
+debug: executable
+
+executable: lib
 	$(CC) $(CCFLAG) $(MAIN) -o $(EXEC) $(LDFLAG)
 
 lib: $(OBJDIR) $(OBJ)
