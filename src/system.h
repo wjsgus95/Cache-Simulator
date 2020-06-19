@@ -26,6 +26,8 @@ public:
     static unsigned create_cache(section_t& m_section);
     // Create memory given config and return it's depth. Depth increments as you create more memory models.
     static unsigned create_memory(section_t& m_section);
+    // Get number of pending requests.
+    static unsigned pending_requests();
 
 private:
     static std::vector<component_t*> hiearchy;

@@ -1,5 +1,5 @@
 #include "cache.h"
-#include "message.h"
+#include "request.h"
 
 cache_line_t::cache_line_t(unsigned m_associativity) : 
     associativity(m_associativity) {
@@ -28,9 +28,28 @@ cache_t::~cache_t() {
 }
 
 void cache_t::tick() {
+    if(load_queue.size()) {
+        request_t* req = *load_queue.begin();
+        debug_printf("%lu %d\n", req->address, req->type);
+        delete req;
+        
+        load_queue.erase(load_queue.begin());
+    }
+    else if(store_queue.size()) {
+        request_t* req = *store_queue.begin();
+        debug_printf("%lu %d\n", req->address, req->type);
+        delete req;
 
+        store_queue.erase(store_queue.begin());
+    }
 }
 
-void cache_t::recv(message_t* m_msg) {
-    queue.push_back(m_msg);
+void cache_t::recv(request_t* m_req) {
+    if(m_req->type == LOAD) {
+        load_queue.push_back(m_req);
+    }
+    else if(m_req->type == STORE) {
+        store_queue.push_back(m_req);
+    }
 }
+

@@ -1,7 +1,11 @@
 #include "system.h"
+
+#include <algorithm> 
+
 #include "trace.h"
 #include "cache.h"
 #include "memory.h"
+#include "request.h"
 
 using namespace std;
 
@@ -17,6 +21,28 @@ void system::init(section_t& m_section) {
 }
 
 void system::run(trace_t& m_trace) {
+    bool stall = false, end = false;
+    unsigned long address;
+    access_type_t type;
+
+    while(!end || pending_requests()) {
+        if(!end && !stall) {
+            end = !m_trace.get_next_trace(address, type);
+            debug_printf("New trace %lu %d\n", address, type);
+        }
+
+        if(!end) {
+            stall = !hiearchy[0]->is_available(type);
+            if(!stall) {
+                request_t* req = new request_t(address, type);        
+                hiearchy[0]->recv(req);
+            }
+        }
+
+        for(int i = hiearchy.size() - 1; i >= 0; i--) {
+            hiearchy[i]->tick();
+        }
+    }
 }
 
 void system::fin() {
@@ -54,4 +80,13 @@ unsigned system::create_memory(section_t& m_section) {
     llc->set_outlink(memory);
 
     return level;
+}
+
+unsigned system::pending_requests() {
+    unsigned result = 0;
+    std::for_each(hiearchy.begin(), hiearchy.end(), [&] (component_t* m_component) {
+        result += m_component->pending_requests();
+    });
+
+    return result;
 }

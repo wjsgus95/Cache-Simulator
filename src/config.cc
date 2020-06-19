@@ -62,10 +62,10 @@ config_t::config_t() {
     general.set_setting("block_size", "16");
     general.set_setting("write_back", "true");
 
-    section_t& cache1 = sections["cache1"] = section_t("cache1");
-    cache1.set_setting("blocks", "16");
-    cache1.set_setting("associativity", "1");
-    cache1.set_setting("latency", "1");
+    section_t& l1 = sections["l1"] = section_t("l1");
+    l1.set_setting("blocks", "16");
+    l1.set_setting("associativity", "1");
+    l1.set_setting("latency", "1");
 
     section_t& memory = sections["memory"] = section_t("memory");
     memory.set_setting("latency", "1000");

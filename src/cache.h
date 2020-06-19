@@ -23,10 +23,9 @@ public:
 
     void tick();
     // Request reception callback.
-    void recv(message_t* m_msg);
+    void recv(request_t* m_req);
 
 private:
-    std::vector<message_t*> queue;
     std::vector<cache_line_t*> cache_lines;
 
     unsigned associativity;

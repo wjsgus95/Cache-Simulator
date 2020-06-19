@@ -41,9 +41,9 @@ trace_t::trace_t(string m_filename) :
             // Convert access type string to enum.
             access_type_t access_type;
             if(access_type_str.compare("R") == 0)
-                access_type = READ;
+                access_type = LOAD;
             else if(access_type_str.compare("W") == 0)
-                access_type = WRITE;
+                access_type = STORE;
             else {
                 cerr << "Error: Unidentified memory access type in " << m_filename << endl;
                 abort();
@@ -53,7 +53,7 @@ trace_t::trace_t(string m_filename) :
             trace_line_t trace_line(address, access_type);
             traces.push(trace_line);
 
-            dprintf("Address: %lu, Access Type: %s\n", address, access_type_str.data());
+            debug_printf("Address: %lu, Access Type: %s\n", address, access_type_str.data());
         }
     }
 }

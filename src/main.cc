@@ -26,12 +26,12 @@ int main(int argc, char** argv) {
 
     // Create multi-level cache.
     unsigned level = 1;
-    string cache_name = string("cache") + to_string(level);
+    string cache_name = string("L") + to_string(level);
     while(config.exists(cache_name)) {
         section_t& section = config.get_section(cache_name);
         system::create_cache(section);
         
-        cache_name = string("cache") + to_string(++level);
+        cache_name = string("L") + to_string(++level);
     }
 
     // Create main memory.

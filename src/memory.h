@@ -14,10 +14,9 @@ public:
 
     void tick();
     // Reqeust reception callback.
-    void recv(message_t* m_msg);
+    void recv(request_t* m_req);
     
 private:
-    std::vector<message_t*> queue;
 };
 
 #endif
