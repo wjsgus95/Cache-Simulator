@@ -10,8 +10,7 @@
 #define debug_printf(fmt, args...)
 #endif
 
-#define LQ_SIZE 16
-#define SQ_SIZE 16
+#define LSQ_SIZE 32
 
 enum access_type_t {
     LOAD= 0,

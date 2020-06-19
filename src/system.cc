@@ -32,7 +32,7 @@ void system::run(trace_t& m_trace) {
         }
 
         if(!end) {
-            stall = !hiearchy[0]->is_available(type);
+            stall = !hiearchy[0]->is_available();
             if(!stall) {
                 request_t* req = new request_t(address, type);        
                 hiearchy[0]->recv(req);
@@ -64,7 +64,13 @@ unsigned system::create_cache(section_t& m_section) {
     if(level > 0) {
         component_t* prev_cache = hiearchy[level-1];
         prev_cache->set_outlink(cache);
+
+        if(dynamic_cast<memory_t*>(prev_cache)) {
+            cerr << "Error: Cache model cannot be below main memory in memory hiearchy." << endl;
+            abort();
+        }
     }
+
 
     return level;
 }
@@ -87,6 +93,5 @@ unsigned system::pending_requests() {
     std::for_each(hiearchy.begin(), hiearchy.end(), [&] (component_t* m_component) {
         result += m_component->pending_requests();
     });
-
     return result;
 }

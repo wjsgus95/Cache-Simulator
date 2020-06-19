@@ -25,7 +25,7 @@ public:
     virtual void recv(request_t* m_req) = 0;
 
     // Check if component is available to queue given type of request.
-    bool is_available(access_type_t m_type);
+    bool is_available();
 
     // Get number of pending requests.
     unsigned pending_requests();
@@ -34,11 +34,9 @@ protected:
     unsigned level;
     link_t* outlink;
 
-    size_t lq_size;
-    size_t sq_size;
+    size_t lsq_size;                 // Load/Store queue size
 
-    std::vector<request_t*> load_queue;
-    std::vector<request_t*> store_queue;
+    std::vector<request_t*> lsq;     // Load queue
 };
 
 #endif

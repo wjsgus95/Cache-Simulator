@@ -1,6 +1,8 @@
 #include "cache.h"
 #include "request.h"
 
+using namespace std;
+
 cache_line_t::cache_line_t(unsigned m_associativity) : 
     associativity(m_associativity) {
 }
@@ -28,28 +30,19 @@ cache_t::~cache_t() {
 }
 
 void cache_t::tick() {
-    if(load_queue.size()) {
-        request_t* req = *load_queue.begin();
-        debug_printf("%lu %d\n", req->address, req->type);
-        delete req;
-        
-        load_queue.erase(load_queue.begin());
-    }
-    else if(store_queue.size()) {
-        request_t* req = *store_queue.begin();
+    /* TODO */
+    //request_t* req = policy->get_next(lsq);
+
+    if(lsq.size()) {
+        request_t* req = *lsq.begin();
         debug_printf("%lu %d\n", req->address, req->type);
         delete req;
 
-        store_queue.erase(store_queue.begin());
+        lsq.erase(lsq.begin());
     }
 }
 
 void cache_t::recv(request_t* m_req) {
-    if(m_req->type == LOAD) {
-        load_queue.push_back(m_req);
-    }
-    else if(m_req->type == STORE) {
-        store_queue.push_back(m_req);
-    }
+    lsq.push_back(m_req);
 }
 
