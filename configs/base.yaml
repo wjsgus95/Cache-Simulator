@@ -6,7 +6,7 @@ general:
   block_size: 16 #bytes
   write_back: true
 
-cache1: #required
+L1: #required
   blocks: 16
   associativity: 1
   latency: 1 #cycles
